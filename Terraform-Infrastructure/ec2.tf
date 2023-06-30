@@ -51,7 +51,7 @@ resource "aws_instance" "k8s" {
 
 resource "aws_key_pair" "k8s" {
   key_name   = "assignment2"
-  public_key = file("${path.module}/Assignment2.pub")
+  public_key = file("${path.module}/assignment2.pub")
 }
 
 resource "aws_ecr_repository" "webserver_images" {
