@@ -35,11 +35,13 @@ resource "aws_instance" "k8s" {
 
   vpc_security_group_ids = [
     module.ec2_sg.security_group_id,
-    module.dev_ssh_sg.security_group_id
+    module.dev_ssh_sg.security_group_id,
+     aws_security_group.ec2_sg_K8.id
   ]
   iam_instance_profile = "LabInstanceProfile"
 
   tags = {
+    Name = "EC2-Assigment2-Jspaha"
     project = "clo835"
   }
 
@@ -49,12 +51,34 @@ resource "aws_instance" "k8s" {
   ebs_optimized           = true
 }
 
+resource "aws_security_group" "ec2_sg_K8" {
+  name        = "ec2_sg_K8"
+  description = "Security group for EC2 instance"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 30001
+    to_port     = 30001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+
 resource "aws_key_pair" "k8s" {
   key_name   = "assignment2"
   public_key = file("${path.module}/assignment2.pub")
 }
 
-resource "aws_ecr_repository" "webserver_images" {
+resource "aws_ecr_repository" "websrv_images" {
   name = "webserver-images"
 }
 
