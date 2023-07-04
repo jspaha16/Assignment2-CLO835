@@ -78,7 +78,7 @@ resource "aws_key_pair" "k8s" {
   public_key = file("${path.module}/assignment2.pub")
 }
 
-resource "aws_ecr_repository" "websrv_images" {
+resource "aws_ecr_repository" "webserver_images" {
   name = "webserver-images"
 }
 
